@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -13,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "STREAMING_URL", "\"" + getStreamingUrl() + "\""
     }
     buildTypes {
         release {
@@ -30,4 +29,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.6.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.6.0'
+    compile 'com.google.android.exoplayer:extension-rtmp:2.6.0'
+
+}
+
+def getStreamingUrl() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("streaming_url")
 }
