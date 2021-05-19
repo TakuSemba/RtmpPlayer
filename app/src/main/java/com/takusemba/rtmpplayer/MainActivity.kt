@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.takusemba.rtmpplayer.databinding.ActivityMainBinding
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
     
     private fun joinStream() {
-        val streamerName = binding.streamerNameEditText.text
+        val streamerName = binding.streamerNameEditText.text.toString()
         val intent = Intent(this, StreamingRoomActivity::class.java).apply {
             putExtra(STREAMER_NAME, streamerName)
         }
