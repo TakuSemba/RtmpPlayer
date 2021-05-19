@@ -1,60 +1,55 @@
 package com.takusemba.rtmpplayer
 
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.PlayerView
 import com.takusemba.rtmpplayer.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+const val STREAMER_NAME = "com.takusemba.rtmpplayer.STREAMER_NAME"
+
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
     private lateinit var binding: ActivityMainBinding
-
-    private var player: SimpleExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        play()
+        binding.streamerNameEditText.addTextChangedListener(this)
+        setOnClickListeners()
+    }
 
-        binding.retry.setOnClickListener {
-            retry()
+    private fun setOnClickListeners() {
+        binding.joinStreamButton.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.join_stream_button -> joinStream()
         }
     }
-
-    private fun play() {
-        player = SimpleExoPlayer.Builder(this).build()
-        val uri = Uri.parse(BuildConfig.STREAMING_URL)
-
-        binding.playerView.player = player
-
-        val mediaSource = ProgressiveMediaSource
-            .Factory(
-                RtmpDataSourceFactory(),
-                DefaultExtractorsFactory()
-            )
-            .createMediaSource(MediaItem.fromUri(uri))
-
-        player?.setMediaSource(mediaSource)
-        player?.prepare()
-        player?.playWhenReady = true
+    
+    private fun joinStream() {
+        val streamerName = binding.streamerNameEditText.text
+        val intent = Intent(this, StreamingRoomActivity::class.java).apply {
+            putExtra(STREAMER_NAME, streamerName)
+        }
+        startActivity(intent)
     }
 
-    private fun stop() {
-        player?.playWhenReady = false
-        player?.release()
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
     }
 
-    private fun retry() {
-        stop()
-        play()
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        binding.joinStreamButton.isEnabled = count != 0
     }
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
 }

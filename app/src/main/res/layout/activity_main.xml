@@ -8,24 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/player_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:resize_mode="fill"
-            app:surface_type="texture_view"
-            app:use_controller="false" />
-
-        <Button
-            android:id="@+id/retry"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/retry"
-            android:textAllCaps="true"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/join_streamer_title"
+                android:textColor="#333333"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/streamer_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/join_streamer_hint"
+                android:importantForAutofill="no"
+                android:layout_marginBottom="16dp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/join_stream_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/join_stream_button"
+                android:enabled="false" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
