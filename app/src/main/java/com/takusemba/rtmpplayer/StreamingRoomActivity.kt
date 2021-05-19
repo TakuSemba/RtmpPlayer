@@ -40,7 +40,7 @@ class StreamingRoomActivity : AppCompatActivity(), Player.Listener {
 
         val streamerName = intent.getStringExtra(STREAMER_NAME)
         if (streamerName != null) {
-            val streamingUri = "rtmp://pull.strattonshire.com/live/${streamerName}"
+            val streamingUri = "https://pull.strattonshire.com/live/${streamerName}"
             val uri = Uri.parse(streamingUri)
 
             binding.playerView.player = player
