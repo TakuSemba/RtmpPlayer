@@ -2,17 +2,14 @@ package com.takusemba.rtmpplayer
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayerFactory
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,16 +27,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun play() {
-        player = ExoPlayerFactory.newSimpleInstance(
-                DefaultRenderersFactory(this), DefaultTrackSelector(), DefaultLoadControl())
-        val playerView = findViewById<SimpleExoPlayerView>(R.id.player_view)
+        player = SimpleExoPlayer.Builder(this).build()
+        val playerView = findViewById<PlayerView>(R.id.player_view)
         val uri = Uri.parse(BuildConfig.STREAMING_URL)
 
         playerView.player = player
 
-        val mediaSource = ExtractorMediaSource(uri, RtmpDataSourceFactory(), DefaultExtractorsFactory(), null, null)
+        val mediaSource = ProgressiveMediaSource
+            .Factory(
+                RtmpDataSourceFactory(),
+                DefaultExtractorsFactory()
+            )
+            .createMediaSource(MediaItem.fromUri(uri))
 
-        player?.prepare(mediaSource)
+        player?.setMediaSource(mediaSource)
+        player?.prepare()
         player?.playWhenReady = true
     }
 
