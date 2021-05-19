@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,8 +21,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        binding.streamerNameEditText.addTextChangedListener(this)
         setOnClickListeners()
+
+        binding.streamerNameEditText.addTextChangedListener(this)
+        if (binding.streamerNameEditText.requestFocus()) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        }
     }
 
     private fun setOnClickListeners() {

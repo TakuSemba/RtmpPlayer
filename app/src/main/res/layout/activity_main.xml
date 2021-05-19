@@ -11,6 +11,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -21,26 +22,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="@string/join_streamer_title"
                 android:textColor="#333333"
-                android:layout_marginBottom="8dp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/streamer_name_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/join_streamer_hint"
                 android:importantForAutofill="no"
-                android:layout_marginBottom="16dp"
                 android:inputType="text" />
 
             <Button
                 android:id="@+id/join_stream_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/join_stream_button"
-                android:enabled="false" />
+                android:enabled="false"
+                android:text="@string/join_stream_button" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
