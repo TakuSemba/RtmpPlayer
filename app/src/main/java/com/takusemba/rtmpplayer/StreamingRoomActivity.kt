@@ -1,5 +1,6 @@
 package com.takusemba.rtmpplayer
 
+import android.app.PendingIntent.getActivity
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -20,14 +21,20 @@ class StreamingRoomActivity : AppCompatActivity(), Player.Listener {
     private lateinit var binding: ActivityStreamingRoomBinding
 
     private var player: SimpleExoPlayer? = null
-
+    private var streamerName: String? = ""
     private var isBuffering: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_streaming_room)
 
-        play()
+        streamerName = intent.getStringExtra(STREAMER_NAME)
+        if (streamerName  != null) {
+            supportActionBar?.title = streamerName
+            play()
+        } else {
+            finish()
+        }
 
         binding.retry.setOnClickListener {
             retry()
@@ -38,23 +45,18 @@ class StreamingRoomActivity : AppCompatActivity(), Player.Listener {
         player = SimpleExoPlayer.Builder(this).build()
         player?.addListener(this)
 
-        val streamerName = intent.getStringExtra(STREAMER_NAME)
-        if (streamerName != null) {
-            val streamingUri = "https://pull.strattonshire.com/live/${streamerName}"
-            val uri = Uri.parse(streamingUri)
+        val streamingUri = "https://pull.strattonshire.com/live/${streamerName}"
+        val uri = Uri.parse(streamingUri)
 
-            binding.playerView.player = player
+        binding.playerView.player = player
 
-            val mediaSource = ProgressiveMediaSource
-                .Factory(RtmpDataSourceFactory())
-                .createMediaSource(MediaItem.fromUri(uri))
+        val mediaSource = ProgressiveMediaSource
+            .Factory(RtmpDataSourceFactory())
+            .createMediaSource(MediaItem.fromUri(uri))
 
-            player?.setMediaSource(mediaSource)
-            player?.prepare()
-            player?.playWhenReady = true
-        } else {
-            finish()
-        }
+        player?.setMediaSource(mediaSource)
+        player?.prepare()
+        player?.playWhenReady = true
     }
 
     private fun stop() {
