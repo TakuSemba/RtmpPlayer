@@ -80,8 +80,10 @@ class StreamingRoomActivity : AppCompatActivity(), Player.Listener {
                 binding.progressBar.visibility = View.VISIBLE
                 isBuffering = true
                 Handler(Looper.getMainLooper()).postDelayed({
-                    if (isBuffering)
+                    if (isBuffering) {
+                        isBuffering = false
                         streamEnded()
+                    }
                 }, 5000)
             }
             Player.STATE_READY -> binding.progressBar.visibility = View.GONE
