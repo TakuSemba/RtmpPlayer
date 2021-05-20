@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RtmpPlayer</string>
+    <string name="app_name">Audience Player</string>
     <string name="retry">retry</string>
     <string name="join_streamer_title">Which streamer would you like to join?</string>
     <string name="join_streamer_hint">e.g. chickenrice</string>
