@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RtmpPlayer.iml" filepath="$PROJECT_DIR$/RtmpPlayer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RtmpPlayer.iml" filepath="$PROJECT_DIR$/RtmpPlayer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RtmpPlayer.iml" filepath="$PROJECT_DIR$/.idea/modules/RtmpPlayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/RtmpPlayer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/RtmpPlayer.app.iml" />
     </modules>
   </component>
 </project>

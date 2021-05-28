@@ -1,55 +1,59 @@
 package com.takusemba.rtmpplayer
 
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.takusemba.rtmpplayer.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+const val STREAMER_NAME = "com.takusemba.rtmpplayer.STREAMER_NAME"
 
-    private var player: SimpleExoPlayer? = null
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        play()
+        setOnClickListeners()
 
-        findViewById<Button>(R.id.retry).setOnClickListener {
-            retry()
+        binding.streamerNameEditText.addTextChangedListener(this)
+        if (binding.streamerNameEditText.requestFocus()) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
     }
 
-    private fun play() {
-        player = ExoPlayerFactory.newSimpleInstance(
-                DefaultRenderersFactory(this), DefaultTrackSelector(), DefaultLoadControl())
-        val playerView = findViewById<SimpleExoPlayerView>(R.id.player_view)
-        val uri = Uri.parse(BuildConfig.STREAMING_URL)
-
-        playerView.player = player
-
-        val mediaSource = ExtractorMediaSource(uri, RtmpDataSourceFactory(), DefaultExtractorsFactory(), null, null)
-
-        player?.prepare(mediaSource)
-        player?.playWhenReady = true
+    private fun setOnClickListeners() {
+        binding.joinStreamButton.setOnClickListener(this)
     }
 
-    private fun stop() {
-        player?.playWhenReady = false
-        player?.release()
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.join_stream_button -> joinStream()
+        }
+    }
+    
+    private fun joinStream() {
+        val streamerName = binding.streamerNameEditText.text.toString()
+        val intent = Intent(this, StreamingRoomActivity::class.java).apply {
+            putExtra(STREAMER_NAME, streamerName)
+        }
+        startActivity(intent)
     }
 
-    private fun retry() {
-        stop()
-        play()
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
     }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        binding.joinStreamButton.isEnabled = count != 0
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
 }
